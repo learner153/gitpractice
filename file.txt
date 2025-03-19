@@ -1,0 +1,84 @@
+Hi venu
+
+Python for game. Try this !!!!!
+
+class Library:
+    def __init__(self, books):
+        """Initialize the library with books and available books list."""
+        self.books_list = books  # Stores all books
+        self.available_books = set(books)  # Available books as a set (faster search)
+        self.lent_books = {}  # Dictionary to track lent books {book: borrower}
+
+    def display_available_books(self):
+        """Display books that are currently available to borrow."""
+        if self.available_books:
+            print("\nðŸ“š Available Books:")
+            for book in sorted(self.available_books):  # Sorted for better readability
+                print(f"  ðŸ“– {book}")
+        else:
+            print("\nâŒ No books available right now.")
+
+    def display_all_books(self):
+        """Display the complete list of books in the library."""
+        print("\nðŸ“– All Books in the Library:")
+        for book in sorted(self.books_list):
+            print(f"  ðŸ“• {book}")
+
+    def lend_book(self, user, book):
+        """Allow a user to borrow a book if available."""
+        if book not in self.books_list:
+            print("âŒ This book is not in the library collection.")
+        elif book in self.available_books:
+            self.lent_books[book] = user
+            self.available_books.remove(book)  # Remove from available books
+            print(f"âœ… '{book}' has been lent to {user}.")
+        else:
+            print(f"âŒ '{book}' is already lent out to {self.lent_books[book]}.")
+
+    def return_book(self, book):
+        """Allow a user to return a borrowed book."""
+        if book in self.lent_books:
+            del self.lent_books[book]  # Remove from lent list
+            self.available_books.add(book)  # Add back to available books
+            print(f"âœ… '{book}' has been returned and is now available.")
+        else:
+            print("âŒ Invalid return. This book was not borrowed.")
+
+def library_menu():
+    """Main function to interact with the Library."""
+    lib = Library(["The Life of Divine", "Da Vinci Code", "The Alchemist", 
+                   "Educated", "Harry Potter"])
+
+    while True:
+        print("\nðŸ“š Library Menu:")
+        print("1ï¸âƒ£  Display available books")
+        print("2ï¸âƒ£  Display all books")
+        print("3ï¸âƒ£  Borrow a book")
+        print("4ï¸âƒ£  Return a book")
+        print("5ï¸âƒ£  Exit")
+
+        try:
+            choice = int(input("\nEnter your choice: "))
+            if choice == 1:
+                lib.display_available_books()
+            elif choice == 2:
+                lib.display_all_books()
+            elif choice == 3:
+                user = input("Enter your name: ")
+                book = input("Enter the book name: ")
+                lib.lend_book(user, book)
+            elif choice == 4:
+                book = input("Enter the book name to return: ")
+                lib.return_book(book)
+            elif choice == 5:
+                print("ðŸ“– Thank you for using the Library! Goodbye!")
+                break
+            else:
+                print("âŒ Invalid option. Please enter a number between 1 and 5.")
+        except ValueError:
+            print("âŒ Invalid input! Please enter a number.")
+
+# Run the library menu
+if __name__ == "__main__":
+    library_menu()
+
